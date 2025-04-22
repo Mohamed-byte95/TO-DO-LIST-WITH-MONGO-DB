@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>TODO_APP</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+        
+    </head>
+    <body>
+        <h1>To Do App</h1>
+        <hr>
+        <div class="content">
+            <form method="POST">
+                <p>
+                    <b> <label for="content">To Do</label></b>
+                </p>
+                <!-- THE INPUT FOR THE TODO LIST-->
+                <p>
+                    <input type="text" name="content" placeholder="Enter you Thoughts..." value = "{{ item }}">
+                </p>
+                <!-- SET THE RADIO BUTTON FOR THE DEGREE -->
+                <p>
+                    <b> <label for="Degree" > Degree</label></b>
+                </p>
+                
+                <p>
+                    <input id="Degree-0" name="Degree" required type="radio" value="important"
+                    {% if deg == "important"  %} checked {% endif%}>
+                    <label for="Degree-0"> Important</label>
+                </p>
+                <p>
+                    <input id="Degree-1" name="Degree" required type="radio" value="unimportant"
+                    {% if deg == "unimportant"  %} checked {% endif %}>
+                    <label for="Degree-1">  Unimportant</label>
+                </p>
+                <!-- SET THE SUBMIT BUTTON -->
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <hr>
+        {%for todo in todos %}
+        <div class="todo">
+            <p>{{todo['content']}} <i> ({{todo['Degree']}})</i></p>
+            <form method="POST" action="{{url_for('delete',id = todo['_id'])}}">
+            <input class="delete" type="submit" value="Delete" name="delete" onclick="return confirm ('Are you Sure you Want to Delete this item ?!')" >
+            </form>
+            <form method=["POST","GET"] action="{{url_for('update_item',id = todo['_id'])}}">
+                <input class="edit" type="submit" value="Edit" name="edit">
+            </form>
+        </div>
+        {%endfor %}
+    </body>
+</html>
